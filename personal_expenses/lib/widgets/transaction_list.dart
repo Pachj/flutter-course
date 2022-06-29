@@ -6,13 +6,14 @@ import '../models/transaction.dart';
 class TransactionList extends StatelessWidget {
   @required
   final List<Transaction> transactions;
+  final Function deleteTransaction;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTransaction);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 400,
       // benefit of ListView builder is that only the visible items are rendered --> for long lists
       child: transactions.isEmpty
           ? Column(
@@ -52,6 +53,12 @@ class TransactionList extends StatelessWidget {
                     title: Text(transactions[index].title),
                     subtitle: Text(
                       DateFormat.yMMMd().format(transactions[index].date),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                      onPressed: () =>
+                          deleteTransaction(transactions[index].id),
                     ),
                   ),
                 );
