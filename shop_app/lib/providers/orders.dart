@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../providers/cart.dart';
+import './cart.dart';
 
 class OrderItem {
   final String id;
@@ -22,8 +22,9 @@ class OrderItem {
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
   final String authToken;
+  final String userId;
 
-  Orders(this.authToken, this._orders);
+  Orders(this.authToken, this._orders, this.userId);
 
   List<OrderItem> get orders {
     return [..._orders];
@@ -67,7 +68,7 @@ class Orders with ChangeNotifier {
   // no error handling added
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final url = Uri.parse(
-        'https://flutter-shop-app-5fb83-default-rtdb.firebaseio.com/orders.json?auth=$authToken');
+        'https://flutter-shop-app-5fb83-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
 
     // needs to be here to have the same on db an in local memory
     final timestamp = DateTime.now().toIso8601String();
